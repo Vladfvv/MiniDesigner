@@ -27,27 +27,42 @@ namespace MiniDesigner
             InitializeComponent();
         }
 
-        private void ColorPicker_SelectedColorChanged(object sender, RoutedEventArgs e)
-        {
-            // Получаем выбранный цвет из ColorPicker
-            // SelectedColor = colorPicker.SelectedColor.ToString();
-            // Assign the selected color to a variable to use outside the popup.
-            myColor = colorPicker.Color;
-            
-            // Close the Flyout.
-            //colorPickerButton.Flyout.Hide();
-            
+        /* private void ColorPicker_SelectedColorChanged(object sender, RoutedEventArgs e)
+         {
+             // Получаем выбранный цвет из ColorPicker
+             // SelectedColor = colorPicker.SelectedColor.ToString();
+             // Assign the selected color to a variable to use outside the popup.
+             myColor = colorPicker.Color;
 
-        }
+             // Close the Flyout.
+             //colorPickerButton.Flyout.Hide();
 
-        private Color Select_Click(object sender, RoutedPropertyChangedEventArgs<Color?> e)
+
+         }*/
+
+
+       
+            private void Select_Click(object sender, RoutedEventArgs e)
         {
-            e.NewValue.Value.ToString();
+            //e.NewValue.Value.ToString();
             myColor = colorPicker.Color;
             // При нажатии кнопки "Select" закрываем окно
+            /*MessageBox.Show(myColor.B.ToString());
+            MessageBox.Show(myColor.G.ToString());
+            MessageBox.Show(myColor.R.ToString());*/
+            this.Close();
+            //this.DialogResult = true;
+            //return myColor;
+        }
+
+        private void ColorPicker_SelectedColorChanged(object sender, RoutedPropertyChangedEventArgs<Color> e)
+        {
+            myColor = colorPicker.Color;
+           // myColor.ScA.ToString();
+            MessageBox.Show(myColor.A.ToString());
             //this.Close();
             //this.DialogResult = true;
-            return myColor;
+            //return myColor;
         }
     }
 }

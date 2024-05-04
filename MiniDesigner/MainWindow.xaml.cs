@@ -15,11 +15,10 @@ using System.Windows.Shapes;
 using Xceed.Wpf.Toolkit;
 
 
+
 namespace MiniDesigner
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
+   
     public partial class MainWindow : Window
     {
 
@@ -27,12 +26,11 @@ namespace MiniDesigner
         private Point startPoint;
         private List<Shape> shapes = new List<Shape>();
         private string currentFileName = null;
-        public Color myColorPicker;
+        public Color myColorPicker { get; set; }
+        MySelectColor mySelectColor;
 
 
-
-        private Point currentMousePosition;
-        // private Cursor cursor;
+        private Point currentMousePosition;        
         public SelectShapeDialog selectShapeDialog;
         private Color lineColor;
         private Color bgColor = Colors.White;
@@ -53,31 +51,33 @@ namespace MiniDesigner
         private void Canvas_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             Point clickPoint = e.GetPosition(myCanvas);
-            DrawStar(clickPoint);
+            Console.Write(myColorPicker.R);
+            DrawStar(clickPoint, myColorPicker);
             UpdateStatusBarText(clickPoint);
             UpdateBottomStatusBar(clickPoint);
             //myStatusBar.DataContext = clickPoint;
         }
 
-        private void DrawStar(Point startPoint)
+        private void DrawStar(Point startPoint, Color myColorPicker)
         {
 
 
-            // Реализация рисования звезды
-            // Здесь можно использовать объекты классов из System.Windows.Shapes, например, Polygon
+            // Реализация рисования звезды            
             //startPoint = e.GetPosition(myCanvas);
             Polygon myPolygon = new Polygon();
-            myPolygon.Points = new PointCollection();
-            /*myPolygon.Points.Add(new Point(100, 200));
-            myPolygon.Points.Add(new Point(150, 250));
-            myPolygon.Points.Add(new Point(300, 250));
-            myPolygon.Points.Add(new Point(250, 300));*/
+            myPolygon.Points = new PointCollection();            
             myPolygon.Points.Add(new Point(startPoint.X, startPoint.Y - 10));
             myPolygon.Points.Add(new Point(startPoint.X + 10, startPoint.Y));
             myPolygon.Points.Add(new Point(startPoint.X, startPoint.Y+10));
             myPolygon.Points.Add(new Point(startPoint.X-10, startPoint.Y));
             myPolygon.StrokeThickness = 5;
-            myPolygon.Stroke = Brushes.Black;
+            if(myColorPicker.R == 0 && myColorPicker.G == 0 && myColorPicker.B == 0)  myPolygon.Stroke = Brushes.Black;
+            else
+            {
+                SolidColorBrush mySolidColorBrush = new SolidColorBrush(myColorPicker);                
+                myPolygon.Stroke = mySolidColorBrush;
+            }
+            //myPolygon.Stroke = Brushes.Black;
             myPolygon.Fill = Brushes.Yellow;
             myCanvas.Children.Add(myPolygon);
             shapes.Add(myPolygon);
@@ -158,34 +158,7 @@ namespace MiniDesigner
         {
            // SelectShapeDialog selectShapeDialog = new SelectShapeDialog();
 
-            if (selectShapeDialog.ShowDialog() == true)
-            {
-                if ((selectShapeDialog.LineColor.ToString().ToCharArray()[0] == '#'
-                    && selectShapeDialog.Thickness != null
-                    && selectShapeDialog.Background.ToString().ToCharArray()[0] == '#'))
-                    System.Windows.MessageBox.Show("Авторизация пройдена");
-                else
-                    System.Windows.MessageBox.Show("Неверный пароль");
-            }
-            else
-            {
-                System.Windows.MessageBox.Show("Авторизация не пройдена");
-            }
-
-
-
-            // Создаем диалоговое окно выбора цвета
-            /* var colorPickerDialog = new ColorPickerDialog{      SelectedColor = (Color)ColorConverter.ConvertFromString("#2196F3") // Начальный цвет - синий
-             };
-
-             // Показываем диалоговое окно и получаем результат
-             if (colorPickerDialog.ShowDialog() == true)
-             {
-                 // Получаем выбранный цвет и применяем его к нужным элементам интерфейса
-                 Color selectedColor = colorPickerDialog.SelectedColor;
-                 // Например, применим цвет к текстовому блоку
-                 SampleTextBlock.Foreground = new SolidColorBrush(selectedColor);
-             }*/
+           
         }
         private void Button_Open_File(object sender, RoutedEventArgs e)
         {
@@ -193,24 +166,13 @@ namespace MiniDesigner
         }
 
         private void SelectLineColor(object sender, RoutedEventArgs e)
-        {/*
-            var colorDialog = new System.Windows.Forms.ColorDialog();
-            if (colorDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                var selectedColor = Color.FromArgb(colorDialog.Color.A, colorDialog.Color.R, colorDialog.Color.G, colorDialog.Color.B);
-                MessageBox.Show($"Выбран цвет: {selectedColor.ToString()}", "Выбор цвета");
-            }*/
+        {
+           
         }
 
         private void LineThickness_Click(object sender, RoutedEventArgs e)
         {
-           /* // Диалог выбора толщины линии
-            DialogWindow dialog = new Di;
-            if (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                // Обработка выбранной толщины линии
-            }*/
-
+          
         }
 
 
@@ -237,24 +199,15 @@ namespace MiniDesigner
                 System.Windows.MessageBox.Show(selectedColor);
                // myColorPicker.ScA() = selectedColor.ElementAt<ColorContext>;
                 myColorPicker = colorPickerWindow.myColor;
+                SolidColorBrush mySolidColorBrush = new SolidColorBrush(myColorPicker);
+                mySelectColor.myR = mySolidColorBrush.Color.R;
                 System.Windows.MessageBox.Show(selectedColor.ToString());
                 //myColorPicker = new ColorPicker(selectedColor); //
                 // Используем выбранный цвет в основной программе
-                System.Windows.MessageBox.Show("Selected Color: " + selectedColor);
+                System.Windows.MessageBox.Show("Selected Color: " + myColorPicker.A);
             }
 
         }
-
-        /*private void PopulateColorList()
-        {
-            ColorList = new ObservableCollection<Xceed.Wpf.Toolkit.ColorItem>();
-            ColorList.Add(new ColorItem(Colors.Beige, "Beige"));
-            ColorList.Add(new ColorItem(Colors.Black, "Black"));
-            ColorList.Add(new ColorItem(Colors.Blue, "Blue"));
-            ColorList.Add(new ColorItem(Colors.Pink, "Pink"));
-            ColorList.Add(new ColorItem(Colors.Red, "Red"));
-            ColorList.Add(new ColorItem(Colors.White, "White"));
-            ColorList.Add(new ColorItem(Colors.Yellow, "Yellow"));
-        }*/
+        
     }
 }

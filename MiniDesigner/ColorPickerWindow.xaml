@@ -7,8 +7,12 @@
         xmlns:local="clr-namespace:MiniDesigner"
         mc:Ignorable="d"
         Title="ColorPickerWindow" Height="450" Width="800">
+    <Window.Resources>
+        
+        
+    </Window.Resources>
     <Grid>
-        <materialDesign:ColorPicker x:Name="colorPicker"/>
+        <materialDesign:ColorPicker x:Name="colorPicker" ColorChanged="ColorPicker_SelectedColorChanged"/>
         <Button Content="Select" Click="Select_Click" Width="40" Height="20" VerticalAlignment="Bottom" ClickMode="Press"/>
     </Grid>
    
